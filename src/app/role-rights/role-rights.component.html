@@ -1,1 +1,125 @@
-<p>role-rights works!</p>
+<div><h1>Header</h1></div>
+<div style="height: 610px; margin-top: 20%">
+  <ejs-tab id="tab_default" heightAdjustMode='Auto' cssClass="sticky-tab">
+    <e-tabitems>
+      <e-tabitem [header]='headerText[0]' cssClass="e-outline">
+        <ng-template #content>
+
+          <div class="" style="width: auto">
+            <div class="table-container">
+              <table class="table table-bordered centered-table">
+                <thead class="sticky-top bg-light text-dark">
+                <tr>
+                  <td style="width: 30%;"><input type="checkbox" id="headerCheckbox"
+                                                 (change)="toggleAllCheckboxes($event)">FeatureName</td>
+                  <td>View</td>
+                  <td>Add</td>
+                  <td>Edit</td>
+                  <td>Active</td>
+                  <td>Delete</td>
+                  <td>Export</td>
+                </tr>
+                </thead>
+                <tbody>
+                <ng-container *ngFor="let item of data; let i=index">
+                  <tr class="color-table">
+                    <td>
+                      <input type="checkbox" [checked]="isMainTaskSelected(i)"
+                             (change)="toggleMainTask($event, i)">
+                      <span (click)="toggleMainItemSubtasksVisibility(item)">
+                                                    <ng-container *ngIf="item.subtasksVisible">▲</ng-container>
+                                                    <ng-container *ngIf="!item.subtasksVisible">▼</ng-container>
+                                                </span>
+                      {{ item.FeatureName }}
+                    </td>
+                    <td><input type="checkbox" [checked]="isAllChecked(i, 'View')"
+                               (change)="toggleAll($event, i, 'View')"></td>
+                    <td><input type="checkbox" [checked]="isAllChecked(i, 'Add')"
+                               (change)="toggleAll($event, i, 'Add')"></td>
+                    <td><input type="checkbox" [checked]="isAllChecked(i, 'Edit')"
+                               (change)="toggleAll($event, i, 'Edit')"></td>
+                    <td><input type="checkbox" [checked]="isAllChecked(i, 'Active')"
+                               (change)="toggleAll($event, i, 'Active')"></td>
+                    <td><input type="checkbox" [checked]="isAllChecked(i, 'Delete')"
+                               (change)="toggleAll($event, i, 'Delete')"></td>
+                    <td><input type="checkbox" [checked]="isAllChecked(i, 'Export')"
+                               (change)="toggleAll($event, i, 'Export')"></td>
+                  </tr>
+                  <ng-container *ngIf="item.subtasksVisible">
+                    <tr *ngFor="let subtask of item.subtasks; let j=index">
+                      <td>
+                        <input type="checkbox" [checked]="isAllSubtaskChecked(i, j)"
+                               (change)="toggleSubtask($event, i, j)">
+                        {{subtask.FeatureName}}
+                      </td>
+                      <td><input type="checkbox" [checked]="subtask.View"
+                                 (change)="toggleCheckbox($event, i, j, 'View')"></td>
+                      <td><input type="checkbox" [checked]="subtask.Add"
+                                 (change)="toggleCheckbox($event, i, j, 'Add')"></td>
+                      <td><input type="checkbox" [checked]="subtask.Edit"
+                                 (change)="toggleCheckbox($event, i, j, 'Edit')"></td>
+                      <td><input type="checkbox" [checked]="subtask.Active"
+                                 (change)="toggleCheckbox($event, i, j, 'Active')"></td>
+                      <td><input type="checkbox" [checked]="subtask.Delete"
+                                 (change)="toggleCheckbox($event, i, j, 'Delete')"></td>
+                      <td><input type="checkbox" [checked]="subtask.Export"
+                                 (change)="toggleCheckbox($event, i, j, 'Export')"></td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+          <hr>
+          <div class="btn-last">
+            <div style="margin-left: 10px">
+              <button ejs-button cssClass="e-success" (click)="onSubmit()">
+                Save
+              </button>
+            </div>
+            <div>
+              <button ejs-button cssClass="e-danger">
+                Cancel
+              </button>
+            </div>
+          </div>
+
+
+        </ng-template>
+      </e-tabitem>
+      <e-tabitem [header]='headerText[1]'>
+        <ng-template #content>
+          <ejs-treegrid [dataSource]="fieldData" [gridLines]='lines' [editSettings]="editSettings" [toolbar]="toolbar"  [treeColumnIndex]="1" childMapping="subtasks"
+          >
+            <e-columns>
+              <e-column headerText="" [template]="template" width="0" textAlign="left"></e-column>
+              <e-column field="DisplayName" headerText="DisplayName" width="1200" textAlign="left"></e-column>
+              <e-column headerText="Action" textAlign="center">
+                <ng-template #template let-data>
+                  <ejs-checkbox [(checked)]="data.View" (change)="onCheckboxChange($event, data)"></ejs-checkbox>
+                </ng-template>
+              </e-column>
+            </e-columns>
+          </ejs-treegrid>
+
+          <hr>
+          <div class="btn-last">
+            <div style="margin-left: 10px">
+              <button ejs-button cssClass="e-success" (click)="onSubmit()">
+                Save
+              </button>
+            </div>
+            <div>
+              <button ejs-button cssClass="e-danger">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </e-tabitem>
+    </e-tabitems>
+  </ejs-tab>
+</div>
